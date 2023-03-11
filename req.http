@@ -1,0 +1,28 @@
+###
+POST http://localhost:4000/user-api/register
+Content-Type: application/json
+
+{
+  "email":"ravi@westagilelabs.com",
+  "username":"Ravi",
+  "password":"ravi"
+}
+
+###
+POST http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+  "email":"sarath@westagilelabs.com",
+  "password":"sarath"
+}
+
+###
+PUT http://localhost:4000/super-admin-api/user/role
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJpYXQiOjE2Nzg1MzQ5ODMsImV4cCI6MTY3ODU1Mjk4M30.pK3CC4uA2GuYjDqgr1bf9dcekEXAfdb0oXcVyGn1ykM
+
+{
+  "email":"ravi@westagilelabs.com",
+  "role":"GDO head"
+}
