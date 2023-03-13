@@ -6,8 +6,7 @@ const jwt=require("jsonwebtoken")
 const dotenv=require("dotenv")
 //configure dotenv-makes process.env available
 dotenv.config();
-//importing users route
-// const superAdminApp=require("../routes/super-admin.route")
+
 
 //verifying received token
 const verifyToken=(req,res,next)=>{
@@ -26,11 +25,11 @@ const verifyToken=(req,res,next)=>{
     //if token is invalid we get error otherwise token is valid
     let role=jwt.verify(token,process.env.SECRET_KEY||"");
     console.log(role)
-    if(role.role=="super admin"){
+    if(role.role=="Admin"){
       next()
     }
     else{
-      res.status(401).send({message:"Unauthorised access..Only super Admin can assign roles"})
+      res.status(401).send({message:"Unauthorised access..Only Admin can access"})
     }
   }catch(err){
     res.status(401).send({message:"please login to continue"})

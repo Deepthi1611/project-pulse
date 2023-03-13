@@ -9,7 +9,7 @@ exports.ProjectConcerns=sequelize.define("project_concerns",{
     type:DataTypes.INTEGER,
     allowNull:false
   },
-  concernDesc:{
+  concernDescription:{
     type:DataTypes.STRING,
     allowNull:false
   },
@@ -25,7 +25,7 @@ exports.ProjectConcerns=sequelize.define("project_concerns",{
     type:DataTypes.STRING,
     allowNull:false
   },
-  concernRaisedInternally:{
+  concernRaisedInternallyOrNot:{
     type:DataTypes.BOOLEAN,
     allowNull:false
   },

@@ -27,7 +27,7 @@ exports.TeamComposition=sequelize.define("team_composition",{
   },
   endDate:{
     type:DataTypes.DATE,
-    allowNull:false
+    defaultValue:null
   },
   status:{
     type:DataTypes.STRING,
@@ -37,7 +37,7 @@ exports.TeamComposition=sequelize.define("team_composition",{
     type:DataTypes.STRING,
     allowNull:false
   },
-  exposerdToCustomer:{
+  exposedToCustomer:{
     type:DataTypes.BOOLEAN,
     allowNull:false
   },

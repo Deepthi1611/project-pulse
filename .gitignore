@@ -1,2 +1,14 @@
 node_modules
 .env
+.gitignore
+.controllers/gdoHead.controller.js
+.controllers/project-manager.controller.js
+.controllers/super-admin.controller.js
+.controllers/users.controller.js
+.middlewares/gdoHead.middleware.js
+.middlewares/project-manager.middleware.js
+.middlewares/super-admin.middleware.js
+.routes/gdoHead.route.js
+.routes/project-manager.route.js
+.routes/super-admin.route.js
+.routes/users.route.js

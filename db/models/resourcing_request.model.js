@@ -10,7 +10,7 @@ exports.ResourcingRequest=sequelize.define("resourcing_request",{
     allowNull:false
   },
   GdoEmail:{
-    type:DataTypes.INTEGER,
+    type:DataTypes.STRING,
     allowNull:false
   },
   projectId:{

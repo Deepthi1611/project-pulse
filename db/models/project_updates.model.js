@@ -9,6 +9,10 @@ exports.ProjectUpdates=sequelize.define("project_updates",{
     type:DataTypes.INTEGER,
     allowNull:false
   },
+  projectManager:{
+    type:DataTypes.STRING,
+    allowNull:false
+  },
   date:{
     type:DataTypes.DATE,
     allowNull:false

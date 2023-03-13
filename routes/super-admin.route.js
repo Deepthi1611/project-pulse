@@ -9,7 +9,10 @@ const verifyToken = require("../middlewares/super-admin.middleware");
 superAdminApp.use(exp.json())
 
 //importing from controllers
-let {assignRole}=require("../controllers/super-admin.controller");
+let {users,assignRole}=require("../controllers/super-admin.controller");
+
+//get users whose role is not assigned
+superAdminApp.get("/users",users)
 
 //assigning role to  an user
 superAdminApp.put("/user/role",verifyToken,assignRole);
