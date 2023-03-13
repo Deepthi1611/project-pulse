@@ -7,7 +7,8 @@ const {DataTypes}=require("sequelize");
 exports.Projects=sequelize.define("projects",{
   projectId:{
     type:DataTypes.INTEGER,
-    primaryKey:true
+    primaryKey:true,
+    autoIncrement:true
   },
   projectName:{
     type:DataTypes.STRING,

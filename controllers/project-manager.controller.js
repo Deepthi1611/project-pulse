@@ -17,6 +17,7 @@ const {Op}=require("sequelize")
 
 //import nodemailer
 const nodemailer = require('nodemailer');
+const { Users } = require("../db/models/users.model");
 
 //create connection to smtp
 const transporter = nodemailer.createTransport({
@@ -47,9 +48,14 @@ exports.projectUpdate = expressAsyncHandler(async (req, res) => {
 
 // raise project concerns by project manager
 exports.raiseProjectConcern = expressAsyncHandler(async (req, res) => {
+  let emails=await Users.findAll({where:{"role":"Admin"}})
+  let adminEmails=emails.map((userObject)=>userObject.dataValues.email)
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  let gdoHeadEmail=projectRecord.dataValues.gdoHeadEmail
+  adminEmails.push(gdoHeadEmail)
   let mailOptions = {
     from: "projectpulse133@gmail.com",
-    to: "saideepthi.p@westagilelabs.com",
+    to: adminEmails,
     subject: `Project concern is raised for project ${req.body.projectId} by ${req.body.raisedBy}`,
     text: `Hello Admin,
      A project concern is raised for the above project and the concern description is: ${req.body.concernDescription}

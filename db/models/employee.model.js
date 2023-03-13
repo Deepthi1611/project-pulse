@@ -10,6 +10,7 @@ exports.Employee = sequelize.define(
     empId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement:true
     },
     empName: {
       type: DataTypes.STRING,
