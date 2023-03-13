@@ -2,6 +2,8 @@
 const sequelize=require("../db.config");
 //import datatypes from sequelize
 const {DataTypes}=require("sequelize");
+//import bcryptjs
+const bcryptjs=require("bcryptjs")
 
 //create users model
 exports.Users=sequelize.define("users",{
@@ -24,7 +26,12 @@ exports.Users=sequelize.define("users",{
   },
   password:{
     type:DataTypes.STRING,
-    allowNull:false
+    allowNull:false,
+
+    set(password){
+      let newPassword=bcryptjs.hashSync(password,5)
+      this.setDataValue('password',newPassword)
+    }
   },
   role:{
     type:DataTypes.STRING,

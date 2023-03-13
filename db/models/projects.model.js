@@ -30,10 +30,9 @@ exports.Projects=sequelize.define("projects",{
     allowNull:false
   },
   endDate:{
-    type:DataTypes.DATE,
-    allowNull:false
+    type:DataTypes.DATE
   },
-  projectFitnessIndicator:{
+  overallProjectFitnessIndicator:{
     type:DataTypes.STRING,
     allowNull:false
   },
@@ -49,7 +48,7 @@ exports.Projects=sequelize.define("projects",{
     type:DataTypes.INTEGER,
     allowNull:false
   },
-  GdoHeadEmail:{
+  gdoHeadEmail:{
     type:DataTypes.STRING,
     allowNull:false
   },

@@ -1,28 +1,249 @@
-###
+###For user registration
 POST http://localhost:4000/user-api/register
 Content-Type: application/json
 
 {
-  "email":"ravi@westagilelabs.com",
-  "username":"Ravi",
-  "password":"ravi"
+  "email":"saideepthi.p@westagilelabs.com",
+  "username":"Deepthi",
+  "password":"deepthi"
 }
 
-###
+###For user login
 POST http://localhost:4000/user-api/login
 Content-Type: application/json
 
 {
-  "email":"sarath@westagilelabs.com",
-  "password":"sarath"
+  "email":"ravi@westagilelabs.com",
+  "password":"ravi"
 }
 
-###
+###forget password
+POST http://localhost:4000/user-api/forget-password
+Content-Type: application/json
+
+{
+  "email":"saideepthi.p@westagilelabs.com"
+}
+
+###reset password
+POST http://localhost:4000/user-api/reset-password/email/saideepthi.p@westagilelabs.com
+Content-Type: application/json
+
+{
+    "otp":266101,
+    "password":"Deepthi@134"
+}
+
+###SUPER ADMIN APIS
+
+###get existing users data whose role is not assigned
+GET http://localhost:4000/super-admin-api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJpYXQiOjE2Nzg2ODEwMjUsImV4cCI6MTY3ODY5OTAyNX0.5r4I0xYK6GTOkE_9wVcUWB21xOObsjUHrciGPdjoEVs
+
+###super admin maps the role for existing user
 PUT http://localhost:4000/super-admin-api/user/role
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJpYXQiOjE2Nzg1MzQ5ODMsImV4cCI6MTY3ODU1Mjk4M30.pK3CC4uA2GuYjDqgr1bf9dcekEXAfdb0oXcVyGn1ykM
 
 {
-  "email":"ravi@westagilelabs.com",
-  "role":"GDO head"
+  "email":"teju@westagilelabs.com",
+  "role":"project manager"
 }
+
+
+###ADMIN-APIS
+
+
+###admin creates a project
+POST http://localhost:4000/admin-api/project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2MDk0MDksImV4cCI6MTY3ODYyNzQwOX0.9wTz4MP_h_5BrwjdkSj4E4LNhBx7D7sGLGt931ygSzM
+
+{
+"projectId" :7,
+"projectName":"project 7",
+"client":"Anu",
+"clientAccountManager":"bhanu",
+"statusOfProject":"paused",
+"startDate" :"2023/02/10",
+"overallProjectFitnessIndicator":"red",
+"domain":"mobility",
+"typeOfProject":"mobility",
+"teamSize":3,
+"gdoHeadEmail":"yamini@westagilelabs.com",
+"projectManagerEmail":"teju@westagilelabs.com"
+}
+
+###get all project details
+GET http://localhost:4000/admin-api/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg1NTUwOTcsImV4cCI6MTY3ODU3MzA5N30.V5z2S-D7LZrVodXBJpSJrOi-_9-fd2-1BT1pQfmCAfM
+
+###get specific project details
+GET http://localhost:4000/admin-api/projectId/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2OTIzMzcsImV4cCI6MTY3ODcxMDMzN30.VZZ17Z3c7Hf67-fwZWhPiAHNdTqwow7CFoNySQVhmVY
+
+###update project details
+PUT http://localhost:4000/admin-api/projectId/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2MDY2NDAsImV4cCI6MTY3ODYyNDY0MH0.zD2kMlEWnsbQzvLgmA3dS_Ow5qQ08wzvmFw6Rc6Euok
+
+{
+"projectId" :1,
+"projectName":"project 1",
+"client":"vamsi",
+"clientAccountManager":"Bhanu",
+"statusOfProject":"In progress",
+"startDate" :"2023/02/09",
+"overallProjectFitnessIndicator":"amber",
+"domain":"cloud computing",
+"typeOfProject":"Devops",
+"teamSize":3,
+"gdoHeadEmail":"ravi@westagilelabs.com",
+"projectManagerEmail":"srikar@westagilelabs.com"
+}
+
+###delete a project
+DELETE  http://localhost:4000/admin-api/projectId/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2MDY2NDAsImV4cCI6MTY3ODYyNDY0MH0.zD2kMlEWnsbQzvLgmA3dS_Ow5qQ08wzvmFw6Rc6Euok
+
+
+###GDO-HEAD-APIS
+
+
+###GDO-head adds existing employees to projects
+POST http://localhost:4000/gdoHead-api/team
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2MTAzMjMsImV4cCI6MTY3ODYyODMyM30.VQYxp2KOG8GSSmmQizRctS7rtxzJn7uH7yV0EAQSTUc
+
+{
+"projectId":7,
+"empId":22,
+"empName":"deepak",
+"role":"QA",
+"startDate":"2023/01/20",
+"status":"Active",
+"billingStatus":"billed",
+"exposedToCustomer":true,
+"allocationType":"permanent"
+}
+
+###update team details
+PUT http://localhost:4000/gdoHead-api/update-team
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MDAwMTksImV4cCI6MTY3ODcxODAxOX0.XqVKA_Mf8EnS4kZnLQLfOVbQnqRzhVCxmZXvM_xEP0o
+
+{
+"projectId":7,
+"empId":22,
+"empName":"deepak",
+"role":"Dev",
+"startDate":"2023/01/20",
+"status":"Active",
+"billingStatus":"billed",
+"exposedToCustomer":true,
+"allocationType":"permanent"
+}
+
+###delete team details
+DELETE http://localhost:4000/gdoHead-api/delete-team-member/projectId/3/empId/10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MDAwMTksImV4cCI6MTY3ODcxODAxOX0.XqVKA_Mf8EnS4kZnLQLfOVbQnqRzhVCxmZXvM_xEP0o
+
+###GDO-head raises a resource request
+POST http://localhost:4000/gdoHead-api/projectId/1/resourcing-request
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg1NDc0MDQsImV4cCI6MTY3ODU2NTQwNH0.Y-I1MqbncgiT9ZH7pWVkK_0zjxkwx2wrCawsVnZX0PE
+
+{
+  "requestDesc":"Need one more resources",
+  "GdoEmail" :"yamini@westagilelabs.com",
+  "projectId":6
+}
+
+###get project details under him
+GET http://localhost:4000/gdoHead-api/projects/ravi@westagilelabs.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2ODI5OTQsImV4cCI6MTY3ODcwMDk5NH0.zFPEqQ5wYrurV4JnXbYOWsyOdor0vPPnJonChZexdmQ
+
+###get specific project details
+GET http://localhost:4000/gdoHead-api/projectId/1/gdoEmail/ravi@westagilelabs.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2ODk1OTgsImV4cCI6MTY3ODcwNzU5OH0.Oyc9ezPDDZaQzc-iH6XylQ5-Fi-iUHskJD8RpwQiORA
+
+
+###PROJECT MANAGER APIS
+
+
+###project manager updates project details
+POST http://localhost:4000/project-manager-api/projectId/6/project-update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4NjEzMzMyLCJleHAiOjE2Nzg2MzEzMzJ9.IM0R4DBcjkQuKKFOQ-BRO8kd6DZLuTigUHZkcZ4eBTQ
+
+{
+  "projectId":4,
+  "projectManager":"chandu@westagilelabs.com",
+  "date":"2023/01/28",
+  "statusUpdate":"New feature updated",
+  "scheduleStatus":"Red",
+  "resourcingStatus":"Green",
+  "qualityStatus":"Green",
+  "clientInputs":false
+}
+
+###project managet raises project concerns
+POST http://localhost:4000/project-manager-api/projectId/1/raise-project-concern
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4NjkyOTEwLCJleHAiOjE2Nzg3MTA5MTB9.VRN_k4O4q19QdzOfvQIQUH45CsiqSJA4Onv6wRmXRFo
+
+{
+  "projectId":1,
+  "concernDescription":"More systems required",
+  "raisedBy":"srikar@westagilelabs.com",
+  "raisedOnDate":"2023/03/04",
+  "severity":"Critical",
+  "concernRaisedInternallyOrNot":true,
+  "status":"pending",
+  "mitigatedOn":"2023/03/06"
+}
+
+###get project manager projects
+GET http://localhost:4000/project-manager-api/project/srikar@westagilelabs.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4NjgyNDg0LCJleHAiOjE2Nzg3MDA0ODR9.d20Y-6IMYo-3noc6BcvmfYMteYeewtxjzaiDL4bRhYs
+
+###Update project updates
+PUT http://localhost:4000/project-manager-api/update/project-updates/projectId/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4Njk3NTc1LCJleHAiOjE2Nzg3MTU1NzV9.rcq69lU5l9Q_Dw9QMUpvuYfRyYsnJjmQD-6Wz6c4cZY
+
+{
+  "projectId":1,
+  "projectManager":"srikar@westagilelabs.com",
+  "date":"2023/01/28",
+  "statusUpdate":"New feature updated",
+  "scheduleStatus":"Green",
+  "resourcingStatus":"Green",
+  "qualityStatus":"Green",
+  "clientInputs":false
+}
+
+###delete project updates
+DELETE http://localhost:4000/project-manager-api/projectId/1/date/2023-02-27 00:00:00
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4Njk3NTc1LCJleHAiOjE2Nzg3MTU1NzV9.rcq69lU5l9Q_Dw9QMUpvuYfRyYsnJjmQD-6Wz6c4cZY
+
+###update project concerns
+PUT http://localhost:4000/project-manager-api/update-concern/projectId/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4Njk3NTc1LCJleHAiOjE2Nzg3MTU1NzV9.rcq69lU5l9Q_Dw9QMUpvuYfRyYsnJjmQD-6Wz6c4cZY
+
+{
+  "projectId":1,
+  "concernDescription":"More systems required",
+  "raisedBy":"srikar@westagilelabs.com",
+  "raisedOnDate":"2023/03/04",
+  "severity":"Critical",
+  "concernRaisedInternallyOrNot":true,
+  "status":"mitigated",
+  "mitigatedOn":"2023/03/06"
+}
+
+###delete project concerns
+DELETE http://localhost:4000/project-manager-api/project-concern/projectId/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4Njk3NTc1LCJleHAiOjE2Nzg3MTU1NzV9.rcq69lU5l9Q_Dw9QMUpvuYfRyYsnJjmQD-6Wz6c4cZY
+ 
