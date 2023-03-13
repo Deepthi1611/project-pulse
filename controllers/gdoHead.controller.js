@@ -30,6 +30,7 @@ Projects.TeamComposition = Projects.hasMany(TeamComposition, {
 //adding team members to project
 exports.team=expressAsyncHandler(async(req,res)=>{
   await TeamComposition.create(req.body);
+  await Employee.update({"projectId":req.body.projectId},{where:{"empId":req.body.empId}})
   res.status(201).send({message:"Team member added"})
 })
 

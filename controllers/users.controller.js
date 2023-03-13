@@ -6,6 +6,8 @@ const bcryptjs=require("bcryptjs")
 const jwt=require("jsonwebtoken")
 //importing users model
 let {Users}=require("../db/models/users.model")
+//importing Employee model
+let {Employee}=require("../db/models/employee.model")
 //configure dotenv
 require("dotenv").config()
 
@@ -28,6 +30,14 @@ let otps={}
 
 //register a user
 exports.register=expressAsyncHandler(async (req,res)=>{
+  //check if user exists in employee table
+  console.log(req.body.username)
+  let emp=await Employee.findOne({where:{"empName":req.body.username}})
+  console.log(emp)
+  if(emp==undefined){
+    res.send({message:"Only employees can register"})
+  }
+  else{
   //check if user already registered
   let user=await Users.findOne({where:{"email":req.body.email}})
   // console.log(user)
@@ -40,6 +50,7 @@ exports.register=expressAsyncHandler(async (req,res)=>{
     await Users.create(req.body)
     res.status(201).send({message:"User registered"})
   }
+}
 })
 
 //user login

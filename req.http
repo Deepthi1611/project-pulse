@@ -3,9 +3,9 @@ POST http://localhost:4000/user-api/register
 Content-Type: application/json
 
 {
-  "email":"saideepthi.p@westagilelabs.com",
-  "username":"Deepthi",
-  "password":"deepthi"
+  "email":"deepu@westagilelabs.com",
+  "username":"Deepu",
+  "password":"deepu"
 }
 
 ###For user login
@@ -13,8 +13,8 @@ POST http://localhost:4000/user-api/login
 Content-Type: application/json
 
 {
-  "email":"ravi@westagilelabs.com",
-  "password":"ravi"
+  "email":"sai@westagilelabs.com",
+  "password":"sai"
 }
 
 ###forget password
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ###reset password
-POST http://localhost:4000/user-api/reset-password/email/saideepthi.p@westagilelabs.com
+PUT  http://localhost:4000/user-api/reset-password/email/saideepthi.p@westagilelabs.com
 Content-Type: application/json
 
 {
@@ -57,21 +57,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgY
 ###admin creates a project
 POST http://localhost:4000/admin-api/project
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2MDk0MDksImV4cCI6MTY3ODYyNzQwOX0.9wTz4MP_h_5BrwjdkSj4E4LNhBx7D7sGLGt931ygSzM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg3MTA0MTAsImV4cCI6MTY3ODcyODQxMH0.9ZvW2CJDIeyllZ6-7OHeYier3XKVJtWWCVfp2qEQzxI
 
 {
-"projectId" :7,
-"projectName":"project 7",
-"client":"Anu",
-"clientAccountManager":"bhanu",
-"statusOfProject":"paused",
-"startDate" :"2023/02/10",
-"overallProjectFitnessIndicator":"red",
-"domain":"mobility",
-"typeOfProject":"mobility",
+"projectName":"project 4",
+"client":"swathi",
+"clientAccountManager":"pavan",
+"statusOfProject":"sales",
+"startDate" :"2023/01/09",
+"overallProjectFitnessIndicator":"green",
+"domain":"management",
+"typeOfProject":"management",
 "teamSize":3,
-"gdoHeadEmail":"yamini@westagilelabs.com",
-"projectManagerEmail":"teju@westagilelabs.com"
+"gdoHeadEmail":"yamnini@westagilelabs.com",
+"projectManagerEmail":"chandu@westagilelabs.com"
 }
 
 ###get all project details
@@ -85,7 +84,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iL
 ###update project details
 PUT http://localhost:4000/admin-api/projectId/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg2MDY2NDAsImV4cCI6MTY3ODYyNDY0MH0.zD2kMlEWnsbQzvLgmA3dS_Ow5qQ08wzvmFw6Rc6Euok
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2Nzg3MTEyOTEsImV4cCI6MTY3ODcyOTI5MX0.4CQT1cdZLzKNLi-g5VD5IJt4iTr0CXrvQKDruJ9Ge_Y
 
 {
 "projectId" :1,
@@ -113,14 +112,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iL
 ###GDO-head adds existing employees to projects
 POST http://localhost:4000/gdoHead-api/team
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2MTAzMjMsImV4cCI6MTY3ODYyODMyM30.VQYxp2KOG8GSSmmQizRctS7rtxzJn7uH7yV0EAQSTUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MTE0MDUsImV4cCI6MTY3ODcyOTQwNX0.zWoOXpVnboeM5AhjU-SYZa0PxmAC_m8MRn19pQtdJlk
 
 {
-"projectId":7,
-"empId":22,
-"empName":"deepak",
+"projectId":1,
+"empId":3,
+"empName":"Shobha",
 "role":"QA",
-"startDate":"2023/01/20",
+"startDate":"2023/02/19",
 "status":"Active",
 "billingStatus":"billed",
 "exposedToCustomer":true,
@@ -133,11 +132,11 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MDAwMTksImV4cCI6MTY3ODcxODAxOX0.XqVKA_Mf8EnS4kZnLQLfOVbQnqRzhVCxmZXvM_xEP0o
 
 {
-"projectId":7,
-"empId":22,
-"empName":"deepak",
-"role":"Dev",
-"startDate":"2023/01/20",
+"projectId":1,
+"empId":2,
+"empName":"srikar",
+"role":"Devops",
+"startDate":"2023/01/19",
 "status":"Active",
 "billingStatus":"billed",
 "exposedToCustomer":true,
@@ -145,7 +144,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlY
 }
 
 ###delete team details
-DELETE http://localhost:4000/gdoHead-api/delete-team-member/projectId/3/empId/10
+DELETE http://localhost:4000/gdoHead-api/delete-team-member/projectId/1/empId/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MDAwMTksImV4cCI6MTY3ODcxODAxOX0.XqVKA_Mf8EnS4kZnLQLfOVbQnqRzhVCxmZXvM_xEP0o
 
 ###GDO-head raises a resource request
@@ -164,9 +163,8 @@ GET http://localhost:4000/gdoHead-api/projects/ravi@westagilelabs.com
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2ODI5OTQsImV4cCI6MTY3ODcwMDk5NH0.zFPEqQ5wYrurV4JnXbYOWsyOdor0vPPnJonChZexdmQ
 
 ###get specific project details
-GET http://localhost:4000/gdoHead-api/projectId/1/gdoEmail/ravi@westagilelabs.com
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg2ODk1OTgsImV4cCI6MTY3ODcwNzU5OH0.Oyc9ezPDDZaQzc-iH6XylQ5-Fi-iUHskJD8RpwQiORA
-
+GET http://localhost:4000/gdoHead-api/projectId/6/gdoEmail/yamini@westagilelabs.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3MDc1NjYsImV4cCI6MTY3ODcyNTU2Nn0.PHC5V_KVicwaGZz-o3WfSXR96SYOI-7PMgi99aftYlU
 
 ###PROJECT MANAGER APIS
 
@@ -190,7 +188,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjd
 ###project managet raises project concerns
 POST http://localhost:4000/project-manager-api/projectId/1/raise-project-concern
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4NjkyOTEwLCJleHAiOjE2Nzg3MTA5MTB9.VRN_k4O4q19QdzOfvQIQUH45CsiqSJA4Onv6wRmXRFo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiaWF0IjoxNjc4NzEyMjg0LCJleHAiOjE2Nzg3MzAyODR9.fNqqLMNoTF5rqfr08KhZvnUw6KQZA1fKU4UVco0tqU8
 
 {
   "projectId":1,
