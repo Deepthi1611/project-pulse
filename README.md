@@ -87,6 +87,7 @@ EMAIL_SERVICE_PROVIDER=email service provider name(example: gmail)
  3.Create a project
  4.Update the existing project
  5.Delete existing project
+ 6.Get resourcing requests
 ```
 
 #### GDO Head
