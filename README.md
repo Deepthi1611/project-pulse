@@ -4,9 +4,11 @@
 
 
 
+
 ## Description
 
 This product will serve as tracking tool for projects and portfolio for each GDO and overall organisation. This project contains mere backend development of the product.
+
 ## Installation
 
 You can clone the github project in your local repository for further implementation using the below command:
@@ -55,6 +57,7 @@ EMAIL_PASSWORD=your email password(App password)
 
 EMAIL_SERVICE_PROVIDER=email service provider name(example: gmail)
 ```
+
 ## Overview
 
 ### Roles in the project
