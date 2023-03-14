@@ -3,10 +3,10 @@ const expressAsyncHandler=require("express-async-handler")
 //importing users model
 let {Users}=require("../db/models/users.model")
 
-//get users whose role is not assigned
+//get users details
 exports.users=expressAsyncHandler(async (req,res)=>{
-  let users=await Users.findAll({where:{"role":null},attributes:{exclude:['role','password']}})
-  res.send({message:"users with no role",payload:users})
+  let users=await Users.findAll({attributes:{exclude:['password']}})
+  res.status(200).send({message:"employees:",payload:users})
 })
 
 //assigning role to users

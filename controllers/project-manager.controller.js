@@ -72,7 +72,7 @@ exports.raiseProjectConcern = expressAsyncHandler(async (req, res) => {
   //insert into project_concerns table
   await ProjectConcerns.create(req.body)
   //send response
-  res.send({ message: "Project concern is raised" });
+  res.status(201).send({ message: "Project concern is raised" });
 });
 
 //get project for project manager
@@ -121,7 +121,6 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
   let date=new Date()
   let prevDate=date.getDate() - (date.getDay() - 1) - 14
   let newDate=new Date(date.setDate(prevDate))
-  console.log(newDate)
   updates.forEach((updateObject)=>{
     if(updateObject.dataValues.date>newDate){
       newUpdates.push(updateObject)
@@ -144,7 +143,7 @@ exports.updateProjectUpdates=expressAsyncHandler(async (req,res)=>{
   let update=await ProjectUpdates.findOne({where:{projectId:req.body.projectId}})
   //if project update does not exist
   if(update==undefined){
-    res.send({message:"Project update does not exist"})
+    res.status(204).send({message:"Project update does not exist"})
   }
   //if project update exists, update new details
   else{
@@ -152,7 +151,7 @@ exports.updateProjectUpdates=expressAsyncHandler(async (req,res)=>{
   await ProjectUpdates.update({"projectManager":projectManager,"date":date,"statusUpdate":statusUpdate,
   "scheduleStatus":scheduleStatus,"resourcingStatus":resourcingStatus,"qualityStatus":qualityStatus,"clientInputs":clientInputs},
   {where:{"projectId":projectId}})
-  res.send({message:`updated project updates with projectId: ${projectId}`})
+  res.status(200).send({message:`updated project updates with projectId: ${projectId}`})
 }
 })
 
@@ -166,12 +165,12 @@ exports.deleteProjectUpdate=expressAsyncHandler( async (req,res)=>{
   console.log(update)
   //if project update is not present
   if(update==undefined){
-    res.send({message:"project update does not exist"})
+    res.status(204).send({message:"project update does not exist"})
   }
   //if exists, delete the project update
   else{
     await ProjectUpdates.destroy({where:{"projectId":projectId}})
-    res.send({message:"project update deleted"})
+    res.status(200).send({message:"project update deleted"})
   }
 })
 
@@ -181,7 +180,7 @@ exports.updateConcern=expressAsyncHandler(async (req,res)=>{
   let concern=await ProjectConcerns.findOne({where:{"projectId":req.body.projectId}})
   //if concern does not exist
   if(concern==undefined){
-    res.send({message:"project concern does not exist"})
+    res.status(204).send({message:"project concern does not exist"})
   }
   //if concern exists update the details
   else{
@@ -189,7 +188,7 @@ exports.updateConcern=expressAsyncHandler(async (req,res)=>{
     await ProjectConcerns.update({"concernDescription":concernDescription,"raisedBy":raisedBy,
     "raisedOnDate":raisedOnDate,"severity":severity,"concernRaisedInternallyOrNot":concernRaisedInternallyOrNot,
     "status":status,"mitigatedOn":mitigatedOn},{where:{"projectId":projectId,}})
-    res.send({message:"project concerns updated"})
+    res.status(200).send({message:"project concerns updated"})
   }
 })
 
@@ -201,11 +200,11 @@ exports.deleteConcern=expressAsyncHandler(async (req,res)=>{
   let concern=await ProjectConcerns.findOne({where:{"projectId":projectId}})
   //if concern does not exist
   if(concern==undefined){
-    res.send({message:"concern does not exist"})
+    res.status(204).send({message:"concern does not exist"})
   }
   //if concern exist delete concern
   else{
     await ProjectConcerns.destroy({where:{"projectId":projectId}})
-    res.send({message:"project concern deleted"})
+    res.status(200).send({message:"project concern deleted"})
   }
 })

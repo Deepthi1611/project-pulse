@@ -31,11 +31,10 @@ let otps={}
 //register a user
 exports.register=expressAsyncHandler(async (req,res)=>{
   //check if user exists in employee table
-  console.log(req.body.username)
+  // console.log(req.body.username)
   let emp=await Employee.findOne({where:{"empName":req.body.username}})
-  console.log(emp)
   if(emp==undefined){
-    res.send({message:"Only employees can register"})
+    res.status(401).send({message:"Only employees can register"})
   }
   else{
   //check if user already registered
@@ -76,8 +75,7 @@ exports.login=expressAsyncHandler(async (req,res)=>{
       //if role is assigned
       else{
       //create jwt token and send to client
-      let signedToken=jwt.sign({role:user.role},process.env.SECRET_KEY||"",{expiresIn:"5h"})
-      console.log(user)
+      let signedToken=jwt.sign({role:user.role,email:user.email},process.env.SECRET_KEY||"",{expiresIn:"5h"})
       //remove password
       delete user.dataValues.password
       //send jwt in response
@@ -115,7 +113,7 @@ exports.forgetpassword=expressAsyncHandler(async(req,res)=>{
       //delete OTP from object after 10 minutes
       delete otps[req.body.email]
   },600000)
-  res.send({message:"OTP to reset your password is sent to your email"})    
+  res.status(200).send({message:"OTP to reset your password is sent to your email"})    
 })
 
 //reset password
@@ -126,9 +124,9 @@ exports.resetPassword=expressAsyncHandler(async(req,res)=>{
       await Users.update({password:req.body.password},{where:{
           email:req.params.email
       }})
-      res.send({message:"Password reset sucessfully"})
+      res.status(200).send({message:"Password reset sucessfully"})
   }
   else{
-      res.send({message:"Invalid OTP"})
+      res.status(401).send({message:"Invalid OTP"})
   }
 })

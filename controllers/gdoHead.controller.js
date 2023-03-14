@@ -16,21 +16,14 @@ const {Employee}=require("../db/models/employee.model")
 //import resourcingRequest model
 const {ResourcingRequest}=require("../db/models/resourcing_request.model")
 
+//import jwt
+const jwt=require("jsonwebtoken")
 
-// Association between TeamComposition and Employee(one-many)
-TeamComposition.Employee = TeamComposition.hasMany(Employee, {
-  foreignKey: "projectId",
-});
-
-// Association between project and team composition model (one-to-many)
-Projects.TeamComposition = Projects.hasMany(TeamComposition, {
-  foreignKey: "projectId",
-});
 
 //adding team members to project
 exports.team=expressAsyncHandler(async(req,res)=>{
   await TeamComposition.create(req.body);
-  await Employee.update({"projectId":req.body.projectId},{where:{"empId":req.body.empId}})
+  // await Employee.update({"projectId":req.body.projectId},{where:{"empId":req.body.empId}})
   res.status(201).send({message:"Team member added"})
 })
 
@@ -49,7 +42,7 @@ exports.updateTeam=expressAsyncHandler(async (req,res)=>{
   })
   //if employee does not exist in that project
   if(team==undefined){
-    res.send({message:"employee does not exist in that project"})
+    res.status(204).send({message:"employee does not exist in that project"})
   }
   //if present update details
   else{
@@ -62,7 +55,7 @@ exports.updateTeam=expressAsyncHandler(async (req,res)=>{
         { "empId": empId }
       ]
     }})
-    res.send({message:"employee details in the team updated"})
+    res.status(200).send({message:"employee details in the team updated"})
   }
 })
 
@@ -81,7 +74,7 @@ exports.deleteTeamMember=expressAsyncHandler(async (req,res)=>{
   })
   //if employee does not exist in that project
   if(team==undefined){
-    res.send({message:"employee does not exist in that project"})
+    res.status(204).send({message:"employee does not exist in that project"})
   }
   //if present delete employee from that team
   else{
@@ -91,7 +84,7 @@ exports.deleteTeamMember=expressAsyncHandler(async (req,res)=>{
         { "empId": empId }
       ]
     }})
-    res.send({message:"Team member deleted"})
+    res.status(200).send({message:"Team member deleted"})
   }
 })
 
@@ -182,7 +175,6 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
   let date=new Date()
   let prevDate=date.getDate() - (date.getDay() - 1) - 14
   let newDate=new Date(date.setDate(prevDate))
-  console.log(newDate)
   updates.forEach((updateObject)=>{
     if(updateObject.dataValues.date>newDate){
       newUpdates.push(updateObject)

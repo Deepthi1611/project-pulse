@@ -14,7 +14,8 @@ exports.Employee = sequelize.define(
     },
     empName: {
       type: DataTypes.STRING,
-    },
+      allowNull:false
+    }
   },
   {
     freezeTableName: true,
