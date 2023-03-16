@@ -24,10 +24,10 @@ adminApp.get("/projectId/:projectId",verifyToken,getSpecificProjectDetails)
 adminApp.put("/projectId/:projectId",verifyToken,updateProject)
 
 //delete a project
-adminApp.delete("/projectId/:projectId",deleteProject)
+adminApp.delete("/projectId/:projectId",verifyToken,deleteProject)
 
 //get resourcing request
-adminApp.get("/resource-requests",getResourceRequests)
+adminApp.get("/resource-requests",verifyToken,getResourceRequests)
 
 //exporting admin route
 module.exports=adminApp

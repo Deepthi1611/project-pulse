@@ -48,6 +48,7 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
         "projectManager",
         "domain",
         "typeOfProject",
+        "teamSize"
       ],
     },
   });
@@ -70,7 +71,7 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
   let projectRecord = await Projects.findOne({
     where: {
       projectId: projectIdFromUrl
-    },
+    },attributes:{exclude:['teamSize']},
 
     include: [
       

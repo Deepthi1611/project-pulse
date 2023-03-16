@@ -10,8 +10,8 @@ const { ProjectUpdates } = require("../db/models/project_updates.model");
 // import projectconcerns model
 const { ProjectConcerns } = require("../db/models/project_concerns.model");
 
-//import Op from sequelize
-const {Op}=require("sequelize")
+//import jwt
+const jwt=require("jsonwebtoken")
 
 //SMTP SETUP
 
@@ -41,25 +41,63 @@ Projects.ProjectConcern = Projects.hasMany(ProjectConcerns, {
 
 // projectUpdates updated by projectManager
 exports.projectUpdate = expressAsyncHandler(async (req, res) => {
-  // insert the data into projectupdates model
-  await ProjectUpdates.create(req.body);
-  res.status(201).send({ message: "Project Updates created" });
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager){
+    // insert the data into projectupdates model
+    await ProjectUpdates.create(req.body);
+    res.status(201).send({ message: "Project Updates created" });
+    }
+    else{
+      res.status(401).send({message:"You cannot add updates for a project that is not under you"})
+    }
+  }
 });
 
 // raise project concerns by project manager
 exports.raiseProjectConcern = expressAsyncHandler(async (req, res) => {
-  let emails=await Users.findAll({where:{"role":"Admin"}})
-  let adminEmails=emails.map((userObject)=>userObject.dataValues.email)
   let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
-  let gdoHeadEmail=projectRecord.dataValues.gdoHeadEmail
-  adminEmails.push(gdoHeadEmail)
-  let mailOptions = {
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager)
+    {
+    let emails=await Users.findAll({where:{"role":"Admin"}})
+    let adminEmails=emails.map((userObject)=>userObject.dataValues.email)
+    let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+    let gdoHeadEmail=projectRecord.dataValues.gdoHeadEmail
+    adminEmails.push(gdoHeadEmail)
+    let mailOptions = {
     from: "projectpulse133@gmail.com",
     to: adminEmails,
     subject: `Project concern is raised for project ${req.body.projectId} by ${req.body.raisedBy}`,
     text: `Hello Admin,
-     A project concern is raised for the above project and the concern description is: ${req.body.concernDescription}
-     severity of project concern:${req.body.severity} `,
+    A project concern is raised for the above project and the concern description is: ${req.body.concernDescription}
+    severity of project concern:${req.body.severity} `,
   };
   //send email
   transporter.sendMail(mailOptions, function (error, info) {
@@ -73,6 +111,11 @@ exports.raiseProjectConcern = expressAsyncHandler(async (req, res) => {
   await ProjectConcerns.create(req.body)
   //send response
   res.status(201).send({ message: "Project concern is raised" });
+    }
+    else{
+      res.status(401).send({message:"You cannot raise project concern for a project that is not under you"})
+    }
+  }
 });
 
 //get project for project manager
@@ -84,7 +127,7 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
   let projectRecord = await Projects.findOne({
     where: {
       projectManagerEmail: projectManagerEmailFromUrl,
-    },
+    }, attributes:{exclude:["teamSize"]},
 
     include: [
       
@@ -139,12 +182,28 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
 
 //update project updates
 exports.updateProjectUpdates=expressAsyncHandler(async (req,res)=>{
-  //check if the project update exists
-  let update=await ProjectUpdates.findOne({where:{projectId:req.body.projectId}})
-  //if project update does not exist
-  if(update==undefined){
-    res.status(204).send({message:"Project update does not exist"})
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
   }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager){
+    //check if the project update exists
+    let update=await ProjectUpdates.findOne({where:{projectId:req.body.projectId}})
+    //if project update does not exist
+    if(update==undefined){
+    res.status(204).send({message:"Project update does not exist"})
+   }
   //if project update exists, update new details
   else{
   let {projectId,projectManager,date,statusUpdate,scheduleStatus,resourcingStatus,qualityStatus,clientInputs}=req.body
@@ -152,59 +211,127 @@ exports.updateProjectUpdates=expressAsyncHandler(async (req,res)=>{
   "scheduleStatus":scheduleStatus,"resourcingStatus":resourcingStatus,"qualityStatus":qualityStatus,"clientInputs":clientInputs},
   {where:{"projectId":projectId}})
   res.status(200).send({message:`updated project updates with projectId: ${projectId}`})
-}
+  }
+  }
+    else{
+      res.status(401).send({message:"you cannot update project updates of a project that is not under you"})
+    }
+  }
 })
 
 //delete project updates
 exports.deleteProjectUpdate=expressAsyncHandler( async (req,res)=>{
-  //get projectId and Date from req.params
-  let projectId=req.params.projectId
-  let date=req.params.date
-  //check if project update exists with those details
-  let update=await ProjectUpdates.findOne({where: {"projectId":projectId}})
-  console.log(update)
-  //if project update is not present
-  if(update==undefined){
-    res.status(204).send({message:"project update does not exist"})
+  let projectRecord=await Projects.findOne({where:{"projectId":req.params.projectId}})
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
   }
-  //if exists, delete the project update
+  //if bearer token is existed, get token from bearer token
   else{
-    await ProjectUpdates.destroy({where:{"projectId":projectId}})
-    res.status(200).send({message:"project update deleted"})
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager){
+    //get projectId and Date from req.params
+    let projectId=req.params.projectId
+    //check if project update exists with those details
+    let update=await ProjectUpdates.findOne({where: {"projectId":projectId}})
+    console.log(update)
+    //if project update is not present
+    if(update==undefined){
+      res.status(204).send({message:"project update does not exist"})
+    }
+    //if exists, delete the project update
+    else{
+      await ProjectUpdates.destroy({where:{"projectId":projectId}})
+      res.status(200).send({message:"project update deleted"})
+    }
+      }
+    else{
+      res.status(401).send({message:"You cannot delete project updates of a project that is not under you"})
+    }
   }
 })
 
 //update project concern
 exports.updateConcern=expressAsyncHandler(async (req,res)=>{
-  //check if concern exist
-  let concern=await ProjectConcerns.findOne({where:{"projectId":req.body.projectId}})
-  //if concern does not exist
-  if(concern==undefined){
-    res.status(204).send({message:"project concern does not exist"})
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
   }
-  //if concern exists update the details
+  //if bearer token is existed, get token from bearer token
   else{
-    let {projectId,concernDescription,raisedBy,raisedOnDate,severity,concernRaisedInternallyOrNot,status,mitigatedOn}=req.body
-    await ProjectConcerns.update({"concernDescription":concernDescription,"raisedBy":raisedBy,
-    "raisedOnDate":raisedOnDate,"severity":severity,"concernRaisedInternallyOrNot":concernRaisedInternallyOrNot,
-    "status":status,"mitigatedOn":mitigatedOn},{where:{"projectId":projectId,}})
-    res.status(200).send({message:"project concerns updated"})
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager){
+    //check if concern exist
+    let concern=await ProjectConcerns.findOne({where:{"projectId":req.body.projectId}})
+    //if concern does not exist
+    if(concern==undefined){
+      res.status(204).send({message:"project concern does not exist"})
+    }
+    //if concern exists update the details
+    else{
+      let {projectId,concernDescription,raisedBy,raisedOnDate,severity,concernRaisedInternallyOrNot,status,mitigatedOn}=req.body
+      await ProjectConcerns.update({"concernDescription":concernDescription,"raisedBy":raisedBy,
+      "raisedOnDate":raisedOnDate,"severity":severity,"concernRaisedInternallyOrNot":concernRaisedInternallyOrNot,
+      "status":status,"mitigatedOn":mitigatedOn},{where:{"projectId":projectId,}})
+      res.status(200).send({message:"project concerns updated"})
+    }
+      }
+    else{
+      res.status(401).send({message:"You cannot update a project concern of a project that is not under you"})
+    }
   }
 })
 
 //delete project concerns
 exports.deleteConcern=expressAsyncHandler(async (req,res)=>{
-  //get project id from req.params
-  let projectId=req.params.projectId
-  //check if project concern exists
-  let concern=await ProjectConcerns.findOne({where:{"projectId":projectId}})
-  //if concern does not exist
-  if(concern==undefined){
-    res.status(204).send({message:"concern does not exist"})
+  let projectRecord=await Projects.findOne({where:{"projectId":req.params.projectId}})
+  let projectManager=projectRecord.projectManagerEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
   }
-  //if concern exist delete concern
+  //if bearer token is existed, get token from bearer token
   else{
-    await ProjectConcerns.destroy({where:{"projectId":projectId}})
-    res.status(200).send({message:"project concern deleted"})
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==projectManager){
+    //get project id from req.params
+    let projectId=req.params.projectId
+    //check if project concern exists
+    let concern=await ProjectConcerns.findOne({where:{"projectId":projectId}})
+    //if concern does not exist
+    // console.log(concern)
+    if(concern==null){
+      res.status(204).send({message:"concern does not exist"})
+    }
+    //if concern exist delete concern
+    else{
+      await ProjectConcerns.destroy({where:{"projectId":projectId}})
+      res.status(200).send({message:"project concern deleted"})
+    }
+      }
+    else{
+      res.status(401).send({message:"you cannot delete a project concern of a project that is not under you"})
+    }
   }
 })

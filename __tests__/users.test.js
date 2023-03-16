@@ -4,7 +4,7 @@ const app = require("../server");
 
 var token;
 //register user
-test("It should register a user",async()=>{
+test("It should send user already registered",async()=>{
   const res = await request(app).post("/user-api/register").send({
   "email":"sashi.dummy@westagilelabs.com",
   "username":"Sashi",
@@ -16,8 +16,8 @@ test("It should register a user",async()=>{
 //successful login
 test('user should login successfully',async()=>{
   const res=await request(app).post("/user-api/login").send({
-  "email":"testgdo@westagilelabs.com",
-  "password":"testgdo"
+  "email":"sashi.dummy@westagilelabs.com",
+  "password":"sashi"
   })
   token=res.body.token
   console.log(token)
@@ -36,8 +36,10 @@ test('user login should be unsuccessful',async()=>{
 //super admin should get users details
 test('super admin should get users details',async()=>{
   const res=await request(app).get('/super-admin-api/users')
-  .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJlbWFpbCI6InNhcmF0aEB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODc5MjYwNiwiZXhwIjoxNjc4ODEwNjA2fQ.8TLh8sXP65quBWsCaS2qiA5uVj4scQTJKrv6Cge-b9Y')
+  .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJlbWFpbCI6InNhcmF0aEB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODg1MjczNiwiZXhwIjoxNjc4ODcwNzM2fQ.K6VkvYlJWZoeDKp5yZ6bmiJZTo7shNAr7uM9lIC-NlM')
   expect(res.status).toBe(200)
+  console.log("response body",res.body)
+  // expect(res.body.length).toBe(4)
 })
 
 //super admin should assign role to user
@@ -47,7 +49,7 @@ test('super admin should assign role to user',async()=>{
   "email":"testgdo@westagilelabs.com",
   "role":"GDO head"
   })
-  .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJlbWFpbCI6InNhcmF0aEB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODc5MjYwNiwiZXhwIjoxNjc4ODEwNjA2fQ.8TLh8sXP65quBWsCaS2qiA5uVj4scQTJKrv6Cge-b9Y')
+  .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3VwZXIgYWRtaW4iLCJlbWFpbCI6InNhcmF0aEB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODg1MjczNiwiZXhwIjoxNjc4ODcwNzM2fQ.K6VkvYlJWZoeDKp5yZ6bmiJZTo7shNAr7uM9lIC-NlM')
   expect(res.status).toBe(409)
 })
 
@@ -56,6 +58,8 @@ test('It should get all projects of admin',async()=>{
   // console.log(token)
   const res=await request(app).get('/admin-api/projects')
   .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJlbWFpbCI6InNhc2hpLmR1bW15QHdlc3RhZ2lsZWxhYnMuY29tIiwiaWF0IjoxNjc4NzkxNjkyLCJleHAiOjE2Nzg4MDk2OTJ9.6f_ECgi9G8IFZepqEa9NRV7miVE7FYLXSfEh0KSaQ_0')
+  expect(res.status).toBe(200)
+  expect(res.body.length).toBe(13)
 })
 
 //admin should create a project

@@ -12,7 +12,7 @@ superAdminApp.use(exp.json())
 let {users,assignRole}=require("../controllers/super-admin.controller");
 
 //get users whose role is not assigned
-superAdminApp.get("/users",users)
+superAdminApp.get("/users",verifyToken,users)
 
 //assigning role to  an user
 superAdminApp.put("/user/role",verifyToken,assignRole);

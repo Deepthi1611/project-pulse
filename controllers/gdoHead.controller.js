@@ -22,16 +22,53 @@ const jwt=require("jsonwebtoken")
 
 //adding team members to project
 exports.team=expressAsyncHandler(async(req,res)=>{
-  await TeamComposition.create(req.body);
-  // await Employee.update({"projectId":req.body.projectId},{where:{"empId":req.body.empId}})
-  res.status(201).send({message:"Team member added"})
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  console.log(projectRecord)
+  let gdoHead=projectRecord.gdoHeadEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==gdoHead){
+      await TeamComposition.create(req.body);
+      res.status(201).send({message:"Team member added"})
+    }
+    else{
+      res.status(401).send({message:"You cannot add team members to a project that is not under you"})
+    }
+  }
 })
 
 //updating team member details
 exports.updateTeam=expressAsyncHandler(async (req,res)=>{
   //get projectId and empId from req.body
   let projectId=req.body.projectId
-  let empId=req.body.empId
+  let projectRecord=await Projects.findOne({where:{"projectId":projectId}})
+  let gdoHead=projectRecord.gdoHeadEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==gdoHead){
+    let empId=req.body.empId
   //check if employee exists in that project
   let team=await TeamComposition.findOne({where: {
     [Op.and]: [
@@ -57,13 +94,34 @@ exports.updateTeam=expressAsyncHandler(async (req,res)=>{
     }})
     res.status(200).send({message:"employee details in the team updated"})
   }
+  }
+    else{
+      res.status(401).send({message:"You cannot update team member details of a a project that is not under you"})
+    }
+  }
 })
 
 //delete team member details
 exports.deleteTeamMember=expressAsyncHandler(async (req,res)=>{
   //get projectId and EmpId from req.params
   let projectId=req.params.projectId
-  let empId=req.params.empId
+  let projectRecord=await Projects.findOne({where:{"projectId":req.params.projectId}})
+  let gdoHead=projectRecord.gdoHeadEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==gdoHead){
+      let empId=req.params.empId
   //check if the employee exist in that project
   let team=await TeamComposition.findOne({where: {
     [Op.and]: [
@@ -86,12 +144,39 @@ exports.deleteTeamMember=expressAsyncHandler(async (req,res)=>{
     }})
     res.status(200).send({message:"Team member deleted"})
   }
+  }
+    else{
+      res.status(401).send({message:"You cannot delete team members from a project that is not under you"})
+    }
+  }
 })
 
 //raising a resource request for a project
 exports.resourceRequest=expressAsyncHandler(async (req,res)=>{
-  await ResourcingRequest.create(req.body)
-  res.status(201).send({message:"resourcing request raised"})
+  let projectId=req.params.projectId
+  let projectRecord=await Projects.findOne({where:{"projectId":req.body.projectId}})
+  let gdoHead=projectRecord.gdoHeadEmail
+  //get bearer token from req.headers
+  let bearerToken=req.headers.authorization;
+  // console.log(bearerToken)
+  //check bearer token existence
+  if(bearerToken===undefined){
+    res.status(401).send({message:"unauthorised access"})
+  }
+  //if bearer token is existed, get token from bearer token
+  else{
+    let token=bearerToken.split(" ")[1]//['bearer',token]
+    //decode the token
+    //if token is invalid we get error otherwise token is valid
+    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
+    if(verify.email==gdoHead){
+    await ResourcingRequest.create(req.body)
+    res.status(201).send({message:"resourcing request raised"})
+    }
+    else{
+      res.status(401).send({message:"You cannot raise resource request to a project that is not under you"})
+    }
+  }
 })
 
 // get all the projects under him
@@ -112,6 +197,7 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
         "hrManager",
         "domain",
         "typeOfProject",
+        "teamSize"
       ],
     },
   });
@@ -139,7 +225,7 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
     where: {
       projectId: projectIdFromUrl,
       gdoHeadEmail: gdoEmailFromUrl,
-    },
+    }, attributes:{exclude:["teamSize"]},
 
     include: [
       {
