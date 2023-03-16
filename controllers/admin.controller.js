@@ -12,6 +12,9 @@ const { ProjectConcerns } = require("../db/models/project_concerns.model");
 // import Team composition model
 const { TeamComposition } = require("../db/models/team_composition.model");
 
+//import resource request model
+const {ResourcingRequest} = require("../db/models/resourcing_request.model")
+
 
 // Association between Project and ProjectUpdates (one-to-many)
 Projects.ProjectUpdates = Projects.hasMany(ProjectUpdates, {
@@ -45,6 +48,7 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
         "projectManager",
         "domain",
         "typeOfProject",
+        "teamSize"
       ],
     },
   });
@@ -67,7 +71,7 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
   let projectRecord = await Projects.findOne({
     where: {
       projectId: projectIdFromUrl
-    },
+    },attributes:{exclude:['teamSize']},
 
     include: [
       
@@ -105,7 +109,6 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
   let date=new Date()
   let prevDate=date.getDate() - (date.getDay() - 1) - 14
   let newDate=new Date(date.setDate(prevDate))
-  console.log(newDate)
   updates.forEach((updateObject)=>{
     if(updateObject.dataValues.date>newDate){
       newUpdates.push(updateObject)
@@ -131,7 +134,7 @@ exports.updateProject=expressAsyncHandler(async (req,res)=>{
   "overallProjectFitnessIndicator":overallProjectFitnessIndicator,"domain":domain,"typeOfProject":typeOfProject,"teamSize":teamSize,"gdoHeadEmail":gdoHeadEmail,"projectManagerEmail":projectManagerEmail},
   {where:{"projectId":projectId}})
   if(update==0){
-    res.send({message:"Nothing new to update"})
+    res.status(204).send({message:"Nothing new to update"})
   }
   else{
     res.status(200).send({message:"Updated successsfully"})
@@ -149,4 +152,17 @@ exports.deleteProject=expressAsyncHandler(async (req,res)=>{
     Projects.destroy({where:{"projectId":projectIdFromUrl}})
     res.status(200).send({message:"project deleted"})
   }
+})
+
+//get resource requests
+exports.getResourceRequests=expressAsyncHandler(async (req,res)=>{
+ let resourcingRequests= await ResourcingRequest.findAll()
+ //If there are no resourcing requests
+ if(resourcingRequests==undefined){
+  res.status(204).send({message:"no resourcing requests found"})
+ }
+ //if resourcing requests are present, display them
+ else{
+ res.status(200).send({message:"resourcing requests",payload:resourcingRequests})
+}
 })

@@ -7,14 +7,6 @@ const app=exp()
 //configure dotenv
 require("dotenv").config()
 
-//creating port number
-const PORT=process.env.PORT||4000
-
-//assigning port number
-app.listen(PORT,()=>{
-  console.log(`server started at ${PORT}`)
-})
-
 //import sequelize from db.config.js
 const sequelize=require("./db/db.config")
 
@@ -47,3 +39,6 @@ app.use("*",(req,res,next)=>{
 app.use((err,req,res,next)=>{
   res.send({"error":err.message})
 })
+
+//exporting app
+module.exports=app

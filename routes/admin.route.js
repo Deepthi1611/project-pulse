@@ -9,7 +9,7 @@ const verifyToken=require("../middlewares/admin.middleware")
 adminApp.use(exp.json())
 
 //import controllers
-let {project,getProjects,getSpecificProjectDetails,updateProject,deleteProject}=require("../controllers/admin.controller")
+let {project,getProjects,getSpecificProjectDetails,updateProject,deleteProject,getResourceRequests}=require("../controllers/admin.controller")
 
 //creating a project
 adminApp.post("/project",verifyToken,project)
@@ -24,7 +24,10 @@ adminApp.get("/projectId/:projectId",verifyToken,getSpecificProjectDetails)
 adminApp.put("/projectId/:projectId",verifyToken,updateProject)
 
 //delete a project
-adminApp.delete("/projectId/:projectId",deleteProject)
+adminApp.delete("/projectId/:projectId",verifyToken,deleteProject)
+
+//get resourcing request
+adminApp.get("/resource-requests",verifyToken,getResourceRequests)
 
 //exporting admin route
 module.exports=adminApp
