@@ -45,10 +45,6 @@ exports.Projects=sequelize.define("projects",{
     type:DataTypes.STRING,
     allowNull:false
   },
-  teamSize:{
-    type:DataTypes.INTEGER,
-    allowNull:false
-  },
   gdoHeadEmail:{
     type:DataTypes.STRING,
     allowNull:false

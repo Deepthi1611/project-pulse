@@ -130,3 +130,13 @@ exports.resetPassword=expressAsyncHandler(async(req,res)=>{
       res.status(401).send({message:"Invalid OTP"})
   }
 })
+
+//get all gdo heads and project managers
+exports.getManagers=expressAsyncHandler(async(req,res)=>{
+  //get all gdo heads
+  let gdos=await Users.findAll({where:{role:"GDO head"}})
+  //get all project managers
+  let projectManagers=await Users.findAll({where:{role:"project manager"}})
+  //send response
+  res.status(200).send({message:"managers",payload:{gdos,projectManagers}})
+})

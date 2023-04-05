@@ -15,7 +15,7 @@ let {team,resourceRequest,getProjects,getSpecificProjectDetails,updateTeam,delet
 gdoHeadApp.post("/team",verifyToken,team)
 
 //raising a resource request
-gdoHeadApp.post("/projectId/:projectId/resourcing-request",verifyToken,resourceRequest);
+gdoHeadApp.post("/resourcing-request",verifyToken,resourceRequest);
 
 //get project details under him
 gdoHeadApp.get("/projects/:gdoHead",verifyToken,getProjects)
@@ -24,10 +24,10 @@ gdoHeadApp.get("/projects/:gdoHead",verifyToken,getProjects)
 gdoHeadApp.put("/update-team",verifyToken,updateTeam)
 
 //delete team member
-gdoHeadApp.delete("/delete-team-member/projectId/:projectId/empId/:empId",verifyToken,deleteTeamMember)
+gdoHeadApp.delete("/delete-team-member/empId/:empId",verifyToken,deleteTeamMember)
 
 //get specific project details
-gdoHeadApp.get("/projectId/:projectId/gdoEmail/:gdoEmail",verifyToken,getSpecificProjectDetails)
+gdoHeadApp.get("/projectId/:projectId",verifyToken,getSpecificProjectDetails)
 
 //export gdoHeadApp
 module.exports=gdoHeadApp

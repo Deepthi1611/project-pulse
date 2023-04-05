@@ -118,15 +118,49 @@ exports.raiseProjectConcern = expressAsyncHandler(async (req, res) => {
   }
 });
 
-//get project for project manager
-exports.getProjects = expressAsyncHandler(async (req, res) => {
+//get projects for project manager
+exports.getProjects = expressAsyncHandler(async(req,res)=>{
   // get the project manager email from url
-  let projectManagerEmailFromUrl = req.params.projectManagerEmail;
+  let projectManagerFromUrl = req.params.projectManagerEmail;
+
+  // query to find all the projects for the gdoHead
+  let projectRecord = await Projects.findAll({
+    where: {
+      projectManagerEmail: projectManagerFromUrl
+    },
+    attributes: {
+      exclude: [
+        "gdoId",
+        "projectManager",
+        "hrManager",
+        "domain",
+        "typeOfProject",
+        "teamSize"
+      ],
+    },
+  });
+  // if there are no projects for gdo
+  if (projectRecord.length == 0) {
+    res.status(204).send({ message: "No projects under you" });
+  }
+  // if there are projects
+  else {
+    res.status(200).send({
+      message: `Projects for Project manager with email ${projectManagerFromUrl}`,
+      payload: projectRecord,
+    });
+  }
+})
+
+//get project for project manager
+exports.getProject = expressAsyncHandler(async (req, res) => {
+  //get project id from req.params
+  let projectIdFromUrl=req.params.projectId
 
   // query to get the particular projectId and its project updates and project concerns by associations
   let projectRecord = await Projects.findOne({
     where: {
-      projectManagerEmail: projectManagerEmailFromUrl,
+      projectId: projectIdFromUrl
     }, attributes:{exclude:["teamSize"]},
 
     include: [
@@ -171,7 +205,7 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
   })
   // send response
   res.status(200).send({
-    message: `Project Details for project with project manager ${projectManagerEmailFromUrl}`,
+    message: `Project Details for project with project id ${projectIdFromUrl}`,
     projectFitness:projectFitness,
     concernIndicator: concernIndicator,
     teamSize: teamSize,

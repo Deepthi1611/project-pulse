@@ -34,8 +34,7 @@ exports.ProjectConcerns=sequelize.define("project_concerns",{
     allowNull:false
   },
   mitigatedOn:{
-    type:DataTypes.DATE,
-    allowNull:false
+    type:DataTypes.DATE
   }
 },{
   timestamps:false,
