@@ -70,28 +70,15 @@ exports.updateTeam=expressAsyncHandler(async (req,res)=>{
     if(verify.email==gdoHead){
     let empId=req.body.empId
   //check if employee exists in that project
-  let team=await TeamComposition.findOne({where: {
-    [Op.and]: [
-      { "projectId": projectId},
-      { "empId": empId }
-    ]
-  }
-  })
+  let team=await TeamComposition.findOne({where: { "empId": empId }})
   //if employee does not exist in that project
   if(team==undefined){
     res.status(204).send({message:"employee does not exist in that project"})
   }
   //if present update details
   else{
-    let {projectId,empId,empName,role,startDate,status,billingStatus,exposedToCustomer,allocationType}=req.body
-    await TeamComposition.update({ "projectId":projectId,"empId":empId,"empName":empName,"role":role,"startDate":startDate,
-    "status":status,"billingStatus":billingStatus,"exposedToCustomer":exposedToCustomer,"allocationType":allocationType},
-    {where:{
-      [Op.and]: [
-        { "projectId": projectId},
-        { "empId": empId }
-      ]
-    }})
+    let empId=req.body.empId
+    await TeamComposition.update(req.body,{where:{ "empId": empId }})
     res.status(200).send({message:"employee details in the team updated"})
   }
   }
@@ -103,51 +90,18 @@ exports.updateTeam=expressAsyncHandler(async (req,res)=>{
 
 //delete team member details
 exports.deleteTeamMember=expressAsyncHandler(async (req,res)=>{
-  //get projectId and EmpId from req.params
-  let projectId=req.params.projectId
-  let projectRecord=await Projects.findOne({where:{"projectId":req.params.projectId}})
-  let gdoHead=projectRecord.gdoHeadEmail
-  //get bearer token from req.headers
-  let bearerToken=req.headers.authorization;
-  // console.log(bearerToken)
-  //check bearer token existence
-  if(bearerToken===undefined){
-    res.status(401).send({message:"unauthorised access"})
-  }
-  //if bearer token is existed, get token from bearer token
-  else{
-    let token=bearerToken.split(" ")[1]//['bearer',token]
-    //decode the token
-    //if token is invalid we get error otherwise token is valid
-    let verify=jwt.verify(token,process.env.SECRET_KEY||"");
-    if(verify.email==gdoHead){
-      let empId=req.params.empId
+  let empId=req.params.empId
+  console.log(empId)
   //check if the employee exist in that project
-  let team=await TeamComposition.findOne({where: {
-    [Op.and]: [
-      { "projectId": projectId},
-      { "empId": empId }
-    ]
-  }
-  })
+  let team=await TeamComposition.findOne({where: {"empId": empId }})
   //if employee does not exist in that project
   if(team==undefined){
     res.status(204).send({message:"employee does not exist in that project"})
   }
   //if present delete employee from that team
   else{
-    await TeamComposition.destroy({where:{
-      [Op.and]: [
-        { "projectId": projectId},
-        { "empId": empId }
-      ]
-    }})
+    await TeamComposition.destroy({where:{"empId": empId }})
     res.status(200).send({message:"Team member deleted"})
-  }
-  }
-    else{
-      res.status(401).send({message:"You cannot delete team members from a project that is not under you"})
-    }
   }
 })
 
@@ -191,7 +145,6 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
     },
     attributes: {
       exclude: [
-        "projectId",
         "gdoId",
         "projectManager",
         "hrManager",
@@ -218,15 +171,12 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
 exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
   // get the projectId and gdoEmail from url
   let projectIdFromUrl = req.params.projectId;
-  let gdoEmailFromUrl = req.params.gdoEmail;
 
   // query to get the particular projectId and its project updates and project concerns by associations
   let projectRecord = await Projects.findOne({
     where: {
       projectId: projectIdFromUrl,
-      gdoHeadEmail: gdoEmailFromUrl,
     }, attributes:{exclude:["teamSize"]},
-
     include: [
       {
         association: Projects.ProjectConcern,
@@ -236,9 +186,9 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
       },
     ],
   });
-
+  console.log(projectRecord)
   //if project record not found
-  if(projectRecord==undefined){
+  if(projectRecord===null){
     res.status(204).send({message:"Project not found"})
   }
   //if project found return project record

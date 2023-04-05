@@ -16,8 +16,8 @@ POST http://localhost:4000/user-api/login
 Content-Type: application/json
 
 {
-  "email":"yamini@westagilelabs.com",
-  "password":"yamini"
+  "email":"ravi@westagilelabs.com",
+  "password":"ravi"
 }
 
 ###forget password
@@ -29,13 +29,16 @@ Content-Type: application/json
 }
 
 ###reset password
-PUT  http://localhost:4000/user-api/reset-password/email/saideepthi.p@westagilelabs.com
+PUT http://localhost:4000/user-api/reset-password/email/saideepthi.p@westagilelabs.com
 Content-Type: application/json
 
 {
-    "otp":266101,
+    "otp":381770,
     "password":"Deepthi@134"
 }
+
+###get managers
+GET http://localhost:4000/user-api/managers
 
 
 
@@ -82,7 +85,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iL
 
 ###get all project details
 GET http://localhost:4000/admin-api/projects
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJlbWFpbCI6InNhc2hpLmR1bW15QHdlc3RhZ2lsZWxhYnMuY29tIiwiaWF0IjoxNjc4Nzg4MTQxLCJleHAiOjE2Nzg4MDYxNDF9.TqoBozRhYPS0wFO8OvOmWXIwuzjwF5ENDEqfQOcB4F4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJlbWFpbCI6InNhc2hpLmR1bW15QHdlc3RhZ2lsZWxhYnMuY29tIiwiaWF0IjoxNjgwMDEyMDMwLCJleHAiOjE2ODAwMzAwMzB9.GdlMiQWzpXY-1IeHqbKVHQE-kx8rOMoaLccUzl8mVKQ
 
 ###get specific project details
 GET http://localhost:4000/admin-api/projectId/1
@@ -123,12 +126,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlY
 ###GDO-head adds existing employees to projects
 POST http://localhost:4000/gdoHead-api/team
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InlhbWluaUB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODgxMjQyNCwiZXhwIjoxNjc4ODMwNDI0fQ.jkmwDtHfeZI0w9nRSobaWXtps74sfrf3E98zSXXwR5U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InJhdmlAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAxMDkxNzYsImV4cCI6MTY4MDEyNzE3Nn0.PG-2UahGPM9djxAkWGXSxFyyWjR3r0sUz35gGpdvbVg
 
 {
-"projectId":2,
-"empId":25,
-"empName":"janu",
+"projectId":4,
+"empId":4,
+"empName":"Bhavana",
 "role":"Dev",
 "startDate":"2023/02/19",
 "status":"Active",
@@ -140,13 +143,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlY
 ###update team details
 PUT http://localhost:4000/gdoHead-api/update-team
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InlhbWluaUB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODgxMjQyNCwiZXhwIjoxNjc4ODMwNDI0fQ.jkmwDtHfeZI0w9nRSobaWXtps74sfrf3E98zSXXwR5U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InJhdmlAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAxMDkxNzYsImV4cCI6MTY4MDEyNzE3Nn0.PG-2UahGPM9djxAkWGXSxFyyWjR3r0sUz35gGpdvbVg
 
 {
 "projectId":2,
 "empId":4,
 "empName":"Bhavana",
-"role":"Devops",
+"role":"Dev",
 "startDate":"2023/01/19",
 "status":"Active",
 "billingStatus":"billed",
@@ -155,11 +158,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlY
 }
 
 ###delete team details
-DELETE http://localhost:4000/gdoHead-api/delete-team-member/projectId/2/empId/25
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InlhbWluaUB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODgxMjQyNCwiZXhwIjoxNjc4ODMwNDI0fQ.jkmwDtHfeZI0w9nRSobaWXtps74sfrf3E98zSXXwR5U
+DELETE http://localhost:4000/gdoHead-api/delete-team-member/empId/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InJhdmlAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwOTc1NDEsImV4cCI6MTY4MDExNTU0MX0.rI9sZzaXpmxK9h4xzaFfPDo8q7nir-Vw6PaKMIIsuEs
 
 ###GDO-head raises a resource request
-POST http://localhost:4000/gdoHead-api/projectId/2/resourcing-request
+POST http://localhost:4000/gdoHead-api/resourcing-request
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InlhbWluaUB3ZXN0YWdpbGVsYWJzLmNvbSIsImlhdCI6MTY3ODgxMjQyNCwiZXhwIjoxNjc4ODMwNDI0fQ.jkmwDtHfeZI0w9nRSobaWXtps74sfrf3E98zSXXwR5U
 
@@ -174,18 +177,16 @@ GET http://localhost:4000/gdoHead-api/projects/testgdo@westagilelabs.com
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InRlc3RnZG9Ad2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2Nzg3ODYyOTIsImV4cCI6MTY3ODgwNDI5Mn0.IrnMC22xHr0VD7NpGManQPVHBRoHRhLeVYdMNHGWIs4
 
 ###get specific project details
-GET http://localhost:4000/gdoHead-api/projectId/9/gdoEmail/testgdo@westagilelabs.com
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJpYXQiOjE2Nzg3Njk2MDUsImV4cCI6MTY3ODc4NzYwNX0.byFyIKL-zhWh5ZQU6WhEsagVe8901JWDbB0KFXRz5bI
-
-
+GET http://localhost:4000/gdoHead-api/projectId/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiR0RPIGhlYWQiLCJlbWFpbCI6InJhdmlAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwNjMzOTEsImV4cCI6MTY4MDA4MTM5MX0.CNyJXFnmmD0AyFuZd8RBzu5E03qlnZjGejXVPXEakVI
 
 ###PROJECT MANAGER APIS
 
 
 ###project manager updates project details
-POST http://localhost:4000/project-manager-api/projectId/4/project-update
+POST http://localhost:4000/project-manager-api/project-updates
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzcmlrYXJAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2Nzg4MTE1NTYsImV4cCI6MTY3ODgyOTU1Nn0.qUnLqce1scRZOfYmIutSmMYjM_7HbpEFVQJ7A6xQOE8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJjaGFuZHVAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwODAyNDEsImV4cCI6MTY4MDA5ODI0MX0.S9TzZ30MslpnyvN8zuj733msZVyd-xZxzvhnMUyO3MM
 
 {
   "projectId":4,
@@ -199,14 +200,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjd
 }
 
 ###project manager raises project concerns
-POST http://localhost:4000/project-manager-api/projectId/4/raise-project-concern
+POST http://localhost:4000/project-manager-api/raise-project-concern
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzcmlrYXJAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2Nzg4MTE1NTYsImV4cCI6MTY3ODgyOTU1Nn0.qUnLqce1scRZOfYmIutSmMYjM_7HbpEFVQJ7A6xQOE8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzaG9iaGFAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwNzQ3OTEsImV4cCI6MTY4MDA5Mjc5MX0.reTvXjnkxBxiLNcf_ttMiRyxClXxULDQlXO7uEQZXlg
 
 {
-  "projectId":4,
+  "projectId":40,
   "concernDescription":"More systems required",
-  "raisedBy":"chandu@westagilelabs.com",
+  "raisedBy":"shobha@westagilelabs.com",
   "raisedOnDate":"2023/02/24",
   "severity":"Critical",
   "concernRaisedInternallyOrNot":true,
@@ -215,8 +216,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjd
 }
 
 ###get project manager projects
-GET http://localhost:4000/project-manager-api/project/srikar@westagilelabs.com
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzcmlrYXJAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2Nzg3OTIwNTYsImV4cCI6MTY3ODgxMDA1Nn0.c9xa0z9mjcA5MBO-xyNiXfmkOfWyMYxTOJFUsVr6xpk
+GET http://localhost:4000/project-manager-api/projects/shobha@westagilelabs.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzaG9iaGFAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwNzI2MDQsImV4cCI6MTY4MDA5MDYwNH0.Ds8Dp2didKFB4J8mOJfGPqMn41jOM1h0jpjz_WBAKVI
+
+###get specific project
+GET http://localhost:4000/project-manager-api/project/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicHJvamVjdCBtYW5hZ2VyIiwiZW1haWwiOiJzaG9iaGFAd2VzdGFnaWxlbGFicy5jb20iLCJpYXQiOjE2ODAwNzI2MDQsImV4cCI6MTY4MDA5MDYwNH0.Ds8Dp2didKFB4J8mOJfGPqMn41jOM1h0jpjz_WBAKVI
 
 ###Update project updates
 PUT http://localhost:4000/project-manager-api/update/project-updates/projectId/4

@@ -8,7 +8,7 @@ userApp.use(exp.json())
 
 
 //importing from controllers
-let {register,login,forgetpassword,resetPassword}=require("../controllers/users.controller");
+let {register,login,forgetpassword,resetPassword,getManagers}=require("../controllers/users.controller");
 
 //register a user
 userApp.post('/register',register);
@@ -21,6 +21,9 @@ userApp.post("/forget-password",forgetpassword)
 
 //reset password
 userApp.put("/reset-password/email/:email",resetPassword)
+
+//get managers
+userApp.get("/managers",getManagers)
 
 //exporting userApp
 module.exports=userApp

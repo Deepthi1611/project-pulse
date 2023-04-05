@@ -43,7 +43,6 @@ exports.getProjects = expressAsyncHandler(async (req, res) => {
   let projects = await Projects.findAll({
     attributes: {
       exclude: [
-        "projectId",
         "gdoId",
         "projectManager",
         "domain",
@@ -127,12 +126,11 @@ exports.getSpecificProjectDetails = expressAsyncHandler(async (req, res) => {
 
 //update project details
 exports.updateProject=expressAsyncHandler(async (req,res)=>{
-  let {projectId,projectName,client,clientAccountManager,statusOfProject,startDate,overallProjectFitnessIndicator,
-    domain,typeOfProject,teamSize,gdoHeadEmail,projectManagerEmail}=req.body;
+  // let {projectId,projectName,client,clientAccountManager,statusOfProject,startDate,overallProjectFitnessIndicator,
+  //   domain,typeOfProject,teamSize,gdoHeadEmail,projectManagerEmail}=req.body;
+  let projectId=req.body.projectId
   //update project details
-  let update=await Projects.update({"projectName":projectName,"client":client,"clientAccountManager":clientAccountManager,"statusOfProject":statusOfProject,"startDate":startDate,
-  "overallProjectFitnessIndicator":overallProjectFitnessIndicator,"domain":domain,"typeOfProject":typeOfProject,"teamSize":teamSize,"gdoHeadEmail":gdoHeadEmail,"projectManagerEmail":projectManagerEmail},
-  {where:{"projectId":projectId}})
+  let update=await Projects.update(req.body,{where:{"projectId":projectId}})
   if(update==0){
     res.status(204).send({message:"Nothing new to update"})
   }
